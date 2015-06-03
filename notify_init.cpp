@@ -6,6 +6,11 @@ NotifyInit::NotifyInit(std::string const & app_name)
 {}
 
 
+NotifyInit::~NotifyInit() {
+    notify_uninit();
+}
+
+
 NotifyInit& NotifyInit::getInit(std::string const & app_name) {
     static NotifyInit init(app_name);
     return init;

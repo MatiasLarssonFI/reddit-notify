@@ -6,7 +6,10 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    Notification notification("Test notification", "This is a test notification");
+    notification.setTimeout(5000);
+    notification.show();
+
     return 0;
 }
 
