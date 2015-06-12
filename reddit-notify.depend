@@ -1,13 +1,20 @@
 # depslib dependency file v1.0
-1433307483 source:/home/matias/project/reddit-notify/src/main.cpp
+1433781313 source:/home/matias/project/reddit-notify/src/main.cpp
+	<thread>
+	<functional>
+	<chrono>
+	<memory>
 	<iostream>
+	<ctime>
+	"fetch_config.hxx"
+	"reddit_link_loader.hxx"
 	"notification.hxx"
 
-1433309818 /home/matias/project/reddit-notify/src/notification.hxx
+1433952664 /home/matias/project/reddit-notify/src/notification.hxx
 	<libnotify/notify.h>
 	<string>
 
-1433309925 source:/home/matias/project/reddit-notify/src/notification.cpp
+1433344365 source:/home/matias/project/reddit-notify/src/notification.cpp
 	"notification.hxx"
 	<stdexcept>
 	<libnotify/notify.h>
@@ -362,10 +369,236 @@
 	<sys/types.h>
 	<pthread.h>
 
-1433309356 /home/matias/project/reddit-notify/src/notify_init.hxx
+1433952715 /home/matias/project/reddit-notify/src/notify_init.hxx
 	<string>
 
-1433308837 source:/home/matias/project/reddit-notify/src/notify_init.cpp
+1433342895 source:/home/matias/project/reddit-notify/src/notify_init.cpp
 	"notify_init.hxx"
 	<libnotify/notify.h>
+
+1433429487 /home/matias/project/reddit-notify/lib/http/http_request.hxx
+	<string>
+	<cstdlib>
+	<curl/curl.h>
+	"http_response.hxx"
+
+1433431467 /home/matias/project/reddit-notify/lib/http/http_response.hxx
+	<string>
+	<curl/curl.h>
+
+1433437245 /home/matias/project/reddit-notify/src/http_request.hxx
+	<string>
+	<cstdlib>
+	<curl/curl.h>
+	"http_response.hxx"
+
+1433437245 /home/matias/project/reddit-notify/src/http_response.hxx
+	<string>
+	<curl/curl.h>
+
+1433437245 source:/home/matias/project/reddit-notify/src/http/curl_init.cpp
+	"curl_init.hxx"
+	<stdexcept>
+	<curl/curl.h>
+
+1434037089 /home/matias/project/reddit-notify/src/http/curl_init.hxx
+	<memory>
+	<curl/curl.h>
+
+1433947923 source:/home/matias/project/reddit-notify/src/http/http_request.cpp
+	"http_request.hxx"
+	<string>
+	<cstring>
+	<curl/curl.h>
+	"http_response.hxx"
+	"curl_init.hxx"
+
+1433952511 /home/matias/project/reddit-notify/src/http/http_request.hxx
+	<string>
+	<cstdlib>
+	<functional>
+	<curl/curl.h>
+	"http_response.hxx"
+
+1433952197 /home/matias/project/reddit-notify/src/http/http_response.hxx
+	<string>
+	<curl/curl.h>
+
+1433437245 source:/home/matias/project/reddit-notify/src/http/http_response.cpp
+	"http_response.hxx"
+
+1433389224 source:/home/matias/project/reddit-notify/src/directory/directory.cpp
+	"directory.hxx"
+	<stdexcept>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+
+1434042475 /home/matias/project/reddit-notify/src/directory/directory.hxx
+	<string>
+	<sys/types.h>
+	<dirent.h>
+
+1433738148 /home/matias/project/reddit-notify/src/fetch_config.hxx
+	<string>
+	<sstream>
+
+1434039913 /home/matias/project/reddit-notify/src/reddit_link_loader.hxx
+	<string>
+	<vector>
+	<memory>
+	"reddit_link.hxx"
+	"fetch_config.hxx"
+	"temp_image_manager.hxx"
+
+1433778080 /home/matias/project/reddit-notify/src/reddit_link.hxx
+
+1433781390 source:/home/matias/project/reddit-notify/src/reddit_link_loader.cpp
+	"reddit_link_loader.hxx"
+	<string>
+	<vector>
+	<ctime>
+	<stdexcept>
+	<json/json.h>
+	"reddit_link.hxx"
+	"fetch_config.hxx"
+	"http/http_request.hxx"
+	"app_info.hxx"
+
+1387453145 /usr/include/jsoncpp/json/json.h
+	"autolink.h"
+	"value.h"
+	"reader.h"
+	"writer.h"
+	"features.h"
+
+1387453145 /usr/include/jsoncpp/json/autolink.h
+	"config.h"
+	<cpptl/cpptl_autolink.h>
+	"autolink.h"
+
+1387453145 /usr/include/jsoncpp/json/config.h
+	<cpptl/config.h>
+
+1387453145 /usr/include/jsoncpp/json/value.h
+	"forwards.h"
+	<string>
+	<vector>
+	<map>
+	<cpptl/smallmap.h>
+	<cpptl/forwards.h>
+
+1387453145 /usr/include/jsoncpp/json/forwards.h
+	"config.h"
+
+1387453145 /usr/include/jsoncpp/json/reader.h
+	"features.h"
+	"value.h"
+	<deque>
+	<stack>
+	<string>
+	<iostream>
+
+1387453145 /usr/include/jsoncpp/json/features.h
+	"forwards.h"
+
+1387453145 /usr/include/jsoncpp/json/writer.h
+	"value.h"
+	<vector>
+	<string>
+	<iostream>
+
+1433778321 source:/home/matias/project/reddit-notify/src/app_info.cpp
+	"app_info.hxx"
+
+1433777325 /home/matias/project/reddit-notify/src/app_info.hxx
+	<string>
+
+1434039648 /home/matias/project/reddit-notify/src/temp_image_manager.hxx
+	<string>
+
+1433910467 source:/home/matias/project/reddit-notify/src/temp_image_manager.cpp
+	"temp_image_manager.hxx"
+	<string>
+	<fstream>
+	<sys/stat.h>
+	<unistd.h>
+	"app_info.hxx"
+	"http/http_request.hxx"
+
+1433778321 source:/home/matias/project/reddit-notify/src/app_info.cxx
+	"app_info.hxx"
+
+1434042101 source:/home/matias/project/reddit-notify/src/directory/directory.cxx
+	"directory.hxx"
+	<stdexcept>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+
+1433437245 source:/home/matias/project/reddit-notify/src/http/curl_init.cxx
+	"curl_init.hxx"
+	<stdexcept>
+	<curl/curl.h>
+
+1434039847 source:/home/matias/project/reddit-notify/src/http/http_request.cxx
+	"http_request.hxx"
+	<string>
+	<cstring>
+	<curl/curl.h>
+	"http_response.hxx"
+	"curl_init.hxx"
+
+1433953404 source:/home/matias/project/reddit-notify/src/http/http_response.cxx
+	"http_response.hxx"
+
+1433954142 source:/home/matias/project/reddit-notify/src/main.cxx
+	<thread>
+	<functional>
+	<chrono>
+	<memory>
+	<iostream>
+	<ctime>
+	<stdexcept>
+	"fetch_config.hxx"
+	"reddit_link_loader.hxx"
+	"notification.hxx"
+
+1433344365 source:/home/matias/project/reddit-notify/src/notification.cxx
+	"notification.hxx"
+	<stdexcept>
+	<libnotify/notify.h>
+	<glib.h>
+	"notify_init.hxx"
+
+1434037155 source:/home/matias/project/reddit-notify/src/notify_init.cxx
+	"notify_init.hxx"
+	<stdexcept>
+	<libnotify/notify.h>
+
+1434040864 source:/home/matias/project/reddit-notify/src/reddit_link_loader.cxx
+	"reddit_link_loader.hxx"
+	<string>
+	<vector>
+	<ctime>
+	<stdexcept>
+	<json/json.h>
+	"reddit_link.hxx"
+	"fetch_config.hxx"
+	"http/http_request.hxx"
+	"app_info.hxx"
+	<iostream>
+
+1434042196 source:/home/matias/project/reddit-notify/src/temp_image_manager.cxx
+	"temp_image_manager.hxx"
+	<string>
+	<fstream>
+	<sys/stat.h>
+	<unistd.h>
+	<stdexcept>
+	<errno.h>
+	<string.h>
+	"app_info.hxx"
+	"http/http_request.hxx"
+	"directory/directory.hxx"
 

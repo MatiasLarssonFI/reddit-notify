@@ -15,10 +15,18 @@
 					<Add option="-std=c++11" />
 					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add option="`pkg-config --cflags glib-2.0 gdk-pixbuf-2.0`" />
+					<Add option="`pkg-config --cflags libnotify`" />
+					<Add option="`curl-config --cflags`" />
+					<Add option="`pkg-config jsoncpp --cflags`" />
+					<Add directory="../lib/directory" />
 				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../lib/http" />
+				</ResourceCompiler>
 				<Linker>
-					<Add option="`pkg-config --libs glib-2.0 gdk-pixbuf-2.0` -lnotify" />
+					<Add option="`pkg-config --libs libnotify`" />
+					<Add option="`curl-config --libs`" />
+					<Add option="`pkg-config jsoncpp --libs`" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -28,6 +36,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="lib/directory" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -37,11 +46,29 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.cpp" />
-		<Unit filename="notification.cpp" />
+		<Unit filename="app_info.cxx" />
+		<Unit filename="app_info.hxx" />
+		<Unit filename="directory/directory.cxx" />
+		<Unit filename="directory/directory.hxx" />
+		<Unit filename="fetch_config.hxx" />
+		<Unit filename="http/curl_init.cxx" />
+		<Unit filename="http/curl_init.hxx" />
+		<Unit filename="http/http_request.cxx" />
+		<Unit filename="http/http_request.hxx" />
+		<Unit filename="http/http_response.cxx" />
+		<Unit filename="http/http_response.hxx" />
+		<Unit filename="main.cxx" />
+		<Unit filename="notification.cxx" />
 		<Unit filename="notification.hxx" />
-		<Unit filename="notify_init.cpp" />
+		<Unit filename="notify_init.cxx" />
 		<Unit filename="notify_init.hxx" />
+		<Unit filename="reddit_link.hxx" />
+		<Unit filename="reddit_link_loader.cxx" />
+		<Unit filename="reddit_link_loader.hxx" />
+		<Unit filename="temp_image_manager.cxx" />
+		<Unit filename="temp_image_manager.hxx" />
+		<Unit filename="unique_reddit_link_loader.cxx" />
+		<Unit filename="unique_reddit_link_loader.hxx" />
 		<Extensions>
 			<code_completion />
 			<debugger />

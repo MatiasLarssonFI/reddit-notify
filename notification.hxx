@@ -10,6 +10,9 @@ class Notification {
         ~Notification();
         void setTimeout(gint milliseconds);
         void show();
+
+        Notification(Notification const & rhs) = delete;
+        Notification& operator = (Notification const & rhs) = delete;
     private:
         NotifyNotification* m_handle;
 };
