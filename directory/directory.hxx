@@ -2,30 +2,43 @@
 #define DIRECTORY_HXX
 
 #include <string>
+#include <mutex>
 
 #include <sys/types.h>
 #include <dirent.h>
 
+
+/**
+ * Directory stream wrapper.
+ *
+ * Used to loop through entry names inside a directory.
+ * Thread-safe.
+ */
 class Directory {
     public:
-        // TBD: doc, path without trailing slash
+        //! Constructor.
+        /**
+         * \param path The directory path, without trailing slash (/)
+         */
         Directory(std::string path);
         ~Directory();
 
 
-        //! Returns the path of next file in the directory.
+        //! Returns the relative path of next entry in the directory.
         /*!
-         * If there are no more files in the directory, empty
+         * Returned path is relative to the path passed to constructor.
+         * If there are no more entries in the directory, an empty
          * string is returned.
          *
-         * @return std::string Name of next file or empty string.
+         * \return std::string Name of next entry or empty string.
          */
-        std::string nextFile();
+        std::string nextEntry();
 
 
-        //! Resets the internal pointer used by nextFile
+        //! Resets the internal pointer used by nextEntry
         void reset();
     private:
+        std::mutex m_mutex;
         DIR* m_handle;
         std::string m_path;
 };

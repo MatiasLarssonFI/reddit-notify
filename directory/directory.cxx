@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <utility>
+#include <mutex>
 
 #include <dirent.h>
 #include <errno.h>
@@ -21,15 +22,17 @@ Directory::~Directory() {
 }
 
 
-std::string Directory::nextFile() {
+std::string Directory::nextEntry() {
     int old_errno = errno;
-    dirent* entry = readdir(m_handle);
+    m_mutex.lock();
+    dirent* entry = readdir(m_handle); // not a thread-safe call
+    m_mutex.unlock();
     if (entry != nullptr) {
         std::string entry_str = entry->d_name;
         if (entry_str != ".." && entry_str != ".") {
             return m_path + "/" + entry_str;
         } else {
-            return nextFile();
+            return nextEntry();
         }
     } else {
         if (errno == old_errno) { // no error

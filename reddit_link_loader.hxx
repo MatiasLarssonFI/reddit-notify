@@ -7,21 +7,19 @@
 
 #include "reddit_link.hxx"
 #include "fetch_config.hxx"
-#include "temp_image_manager.hxx"
+#include "unique_reddit_link_loader.hxx"
 
 
-//! Loads a reddit link
-/*!
- *
- */
+//! Manages the fetching of Reddit links according to FetchConfiguration objects
 class RedditLinkLoader
 {
     public:
         //! Constructor
         /*!
-         * \param configs Array of configurations
+         * \param configs Vector of fetch configurations
          */
         RedditLinkLoader(std::vector<FetchConfig> configs);
+
 
         //! Loads links to buffer
         /*!
@@ -30,6 +28,7 @@ class RedditLinkLoader
          * into the internal buffer according to the configuration.
          */
         void update();
+
 
         //! Returns next link from the buffer or nullptr if buffer empty
         /*!
@@ -40,15 +39,9 @@ class RedditLinkLoader
          * \return pointer to next RedditLink or nullptr
          */
         std::unique_ptr<RedditLink> nextLink();
-
-        bool hasLinks() const { return !m_buffer.empty(); }
-
     private:
-        RedditLink _fetch(FetchConfig const & config);
-
-        std::vector<FetchConfig> m_configs;
-        std::vector<RedditLink> m_buffer;
-        TempImageManager m_img_man;
+        // One UniqueRedditLinkLoader is constructed for each FetchConfiguration
+        std::vector<UniqueRedditLinkLoader> m_loaders;
 };
 
 #endif // REDDITLINKLOADER_HXX

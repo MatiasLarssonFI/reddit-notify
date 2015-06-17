@@ -2,11 +2,10 @@
 
 #include <string>
 #include <fstream>
+#include <mutex>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdexcept>
-#include <errno.h>
-#include <string.h>
 
 #include "app_info.hxx"
 #include "http/http_request.hxx"
@@ -16,16 +15,6 @@ TempImageManager::TempImageManager()
     : m_dir(std::string("/tmp/") + AppInfo::appID() + ".tmp")
     , m_img_count(0) {
 
-    _makeDir();
-}
-
-
-TempImageManager::~TempImageManager() {
-    _removeDir();
-}
-
-
-void TempImageManager::_makeDir() const {
     // create directory if it doesn't exist
     if (::access(m_dir.c_str(), F_OK) != 0) {
         if (::mkdir(m_dir.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) != 0) {
@@ -35,33 +24,9 @@ void TempImageManager::_makeDir() const {
 }
 
 
-void TempImageManager::_removeDir() const {
-    if (::access(m_dir.c_str(), W_OK) == 0) {
-        Directory dir(m_dir);
-        std::string fname;
-        while (!(fname = dir.nextFile()).empty()) {
-            if (::remove(fname.c_str()) != 0) {
-                throw std::runtime_error("Failed to remove temporary image file.");
-            }
-        }
-        if (::rmdir(m_dir.c_str()) != 0) {
-            throw std::runtime_error("Failed to remove temporary image directory.");
-        }
-    }
-}
-
-
-void TempImageManager::_resetDir() const {
-    _removeDir();
-    _makeDir();
-}
-
-
-void TempImageManager::_checkDir() {
-    if (m_img_count > 20) {
-        _resetDir();
-        m_img_count = 0;
-    }
+TempImageManager::~TempImageManager() {
+    _truncateDir();
+    ::rmdir(m_dir.c_str());
 }
 
 
@@ -71,10 +36,31 @@ TempImageManager& TempImageManager::getManager() {
 }
 
 
+void TempImageManager::_truncateDir() {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (::access(m_dir.c_str(), W_OK) == 0) {
+        Directory dir(m_dir);
+        std::string fname;
+        while (!(fname = dir.nextEntry()).empty()) {
+            if (::remove(fname.c_str()) != 0) {
+                throw std::runtime_error(std::string("Failed to remove temporary image file ") + fname);
+            }
+        }
+    }
+}
+
+
+void TempImageManager::_checkDir() {
+    if (m_img_count.load() > 20) {
+        _truncateDir();
+        m_img_count.store(0);
+    }
+}
+
 
 std::string TempImageManager::download(std::string uri) {
     _checkDir();
-    ++m_img_count;
+    m_img_count++;
     HTTPRequest request(uri);
     request.addHeader(std::string("User-Agent: ") + AppInfo::userAgent());
     HTTPResponse resp = request.perform();
