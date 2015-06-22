@@ -440,9 +440,10 @@
 	<sys/types.h>
 	<dirent.h>
 
-1434479342 /home/matias/project/reddit-notify/src/fetch_config.hxx
+1434980677 /home/matias/project/reddit-notify/src/fetch_config.hxx
 	<string>
 	<sstream>
+	<cstdlib>
 
 1434479130 /home/matias/project/reddit-notify/src/reddit_link_loader.hxx
 	<string>
@@ -515,7 +516,7 @@
 1433777325 /home/matias/project/reddit-notify/src/app_info.hxx
 	<string>
 
-1434555330 /home/matias/project/reddit-notify/src/temp_image_manager.hxx
+1434986406 /home/matias/project/reddit-notify/src/temp_image_manager.hxx
 	<atomic>
 	<string>
 	<mutex>
@@ -532,7 +533,7 @@
 1433778321 source:/home/matias/project/reddit-notify/src/app_info.cxx
 	"app_info.hxx"
 
-1434558070 source:/home/matias/project/reddit-notify/src/directory/directory.cxx
+1434559345 source:/home/matias/project/reddit-notify/src/directory/directory.cxx
 	"directory.hxx"
 	<stdexcept>
 	<utility>
@@ -557,7 +558,7 @@
 1433953404 source:/home/matias/project/reddit-notify/src/http/http_response.cxx
 	"http_response.hxx"
 
-1434558958 source:/home/matias/project/reddit-notify/src/main.cxx
+1434985413 source:/home/matias/project/reddit-notify/src/main.cxx
 	<atomic>
 	<thread>
 	<functional>
@@ -591,7 +592,7 @@
 	"fetch_config.hxx"
 	"unique_reddit_link_loader.hxx"
 
-1434556181 source:/home/matias/project/reddit-notify/src/temp_image_manager.cxx
+1434986481 source:/home/matias/project/reddit-notify/src/temp_image_manager.cxx
 	"temp_image_manager.hxx"
 	<string>
 	<fstream>
@@ -611,12 +612,13 @@
 	"temp_image_manager.hxx"
 	"reddit_link.hxx"
 
-1434558656 source:/home/matias/project/reddit-notify/src/unique_reddit_link_loader.cxx
+1434986354 source:/home/matias/project/reddit-notify/src/unique_reddit_link_loader.cxx
 	"unique_reddit_link_loader.hxx"
 	<ctime>
 	<utility>
 	<stdexcept>
 	<json/json.h>
+	<iostream>
 	"app_info.hxx"
 	"http/http_request.hxx"
 	"temp_image_manager.hxx"

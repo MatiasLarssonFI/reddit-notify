@@ -18,13 +18,16 @@ int main()
     std::atomic<bool> killed(false);
 
     auto fetch_f = [&killed] () {
+        auto timenow = (unsigned)std::time(nullptr);
+        // hard-coded example configurations,
+        // these could be loaded e.g. from a JSON file
         std::vector<FetchConfig> configs {
-            {"askscience", "hot", 10, (unsigned)std::time(nullptr)},
-            {"funny", "hot", 5, (unsigned)std::time(nullptr)}
+            {"askscience", "hot", 21, timenow},
+            {"funny", "hot", 12, timenow}
         };
 
         RedditLinkLoader loader(std::move(configs));
-        // TODO: consider condvar here
+
         while (!killed.load()) {
             try {
                 loader.update();

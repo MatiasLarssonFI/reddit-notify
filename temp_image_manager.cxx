@@ -51,6 +51,9 @@ void TempImageManager::_truncateDir() {
 
 
 void TempImageManager::_checkDir() {
+    // TODO: currently we might delete images that have not been
+    // displayed yet. Maybe we should make a TempImage class, with
+    // a field like "allow_delete"?
     if (m_img_count.load() > 20) {
         _truncateDir();
         m_img_count.store(0);

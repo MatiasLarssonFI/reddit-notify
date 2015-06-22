@@ -4,6 +4,7 @@
 #include <utility>
 #include <stdexcept>
 #include <json/json.h>
+#include <iostream> // for cerr
 
 #include "app_info.hxx"
 #include "http/http_request.hxx"
@@ -20,7 +21,7 @@ UniqueRedditLinkLoader::UniqueRedditLinkLoader(FetchConfig config)
 void UniqueRedditLinkLoader::update() {
     if (std::time(nullptr) >= m_config.last_fetch + m_config.interval_sec) {
         this->_fetch();
-        m_config.last_fetch = std::time(nullptr); // time called again because an HTTP request takes an undefined time
+        m_config.last_fetch = std::time(nullptr);
     }
 }
 
@@ -45,13 +46,19 @@ bool UniqueRedditLinkLoader::operator == (UniqueRedditLinkLoader const & rhs) co
 void UniqueRedditLinkLoader::_fetch() {
     std::string uri = "http://www.reddit.com/r/";
     uri += m_config.subreddit;
-    uri += "/";
+    uri += '/';
     uri += m_config.tab;
-    uri += ".json?count=";
-    uri += std::to_string(m_fetch_count);
-    uri += "&after=";
-    uri += m_last_fullname;
-    uri += "&limit=1";
+    uri += ".json?";
+    uri += "limit=1";
+    if (m_fetch_count > 0) {
+        uri += "&count=";
+        uri += std::to_string(m_fetch_count);
+    }
+
+    if (!m_last_fullname.empty()) {
+        uri += "&after=";
+        uri += m_last_fullname;
+    }
 
     HTTPRequest request(uri);
     request.addHeader(std::string("User-Agent: ") + AppInfo::userAgent());
@@ -61,25 +68,33 @@ void UniqueRedditLinkLoader::_fetch() {
         Json::Reader reader;
 
         if (reader.parse(response.body(), root)) {
-            Json::Value json = root.get("data", Json::Value())
-                                    .get("children", Json::Value())
-                                    .get(m_fetch_count + 1, Json::Value())
-                                    .get("data", Json::Value());
-            if (!json.empty()) {
-                Json::Value title = json.get("title", Json::Value());
-                Json::Value thumb = json.get("thumbnail", Json::Value());
-                Json::Value url = json.get("permalink", Json::Value());
-                m_last_fullname = std::string("t3_") + json.get("id", Json::Value()).asString();
+            Json::Value children = root.get("data", Json::Value())
+                                        .get("children", Json::Value());
 
-                if (!title.empty() && !thumb.empty() && !url.empty()) {
-                    const std::string thumb_path = m_img_man.download(thumb.asString());
-                    m_fetch_count++;
-                    m_buffer.push_back( {m_config.subreddit, title.asString(), url.asString(), thumb_path} );
+            if (!children.empty()) {
+                Json::Value json = children.get(Json::ArrayIndex(0), Json::Value())
+                                            .get("data", Json::Value());
+                if (!json.empty()) {
+                    Json::Value title = json.get("title", Json::Value());
+                    Json::Value thumb = json.get("thumbnail", Json::Value());
+                    Json::Value url = json.get("permalink", Json::Value());
+                    m_last_fullname = std::string("t3_") + json.get("id", Json::Value()).asString();
+
+                    if (!title.empty() && !thumb.empty() && !url.empty()) {
+                        const std::string thumb_path = m_img_man.download(thumb.asString());
+                        m_fetch_count++;
+                        m_buffer.push_back( {m_config.subreddit, title.asString(), url.asString(), thumb_path} );
+                        std::cerr << "JSON: " << response.body() << "\n"
+                                    "fullname: " << m_last_fullname << "\n"
+                                    "url: " << uri << "\n\n" << std::endl;
+                    } else {
+                        throw std::invalid_argument(std::string("Failed to parse urls, config: ") + m_config.str());
+                    }
                 } else {
-                    throw std::invalid_argument(std::string("Failed to parse urls, config: ") + m_config.str());
+                    throw std::invalid_argument(std::string("Failed to parse json, config: ") + m_config.str() + ", json: " + response.body());
                 }
             } else {
-                throw std::invalid_argument(std::string("Failed to parse json, config: ") + m_config.str() + ", json: " + response.body());
+                std::cerr << "No children at " << uri << std::endl;
             }
         } else {
             throw std::invalid_argument(std::string("Failed to parse response, config: ") + m_config.str() + "response: " + response.body());

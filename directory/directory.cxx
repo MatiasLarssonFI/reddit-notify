@@ -23,18 +23,19 @@ Directory::~Directory() {
 
 
 std::string Directory::nextEntry() {
-    int old_errno = errno;
+    const int old_errno = errno;
     m_mutex.lock();
-    dirent* entry = readdir(m_handle); // not a thread-safe call
-    m_mutex.unlock();
+    dirent* entry = readdir(m_handle); // not a thread-safe call (dirent may be overwritten)
     if (entry != nullptr) {
         std::string entry_str = entry->d_name;
+        m_mutex.unlock();
         if (entry_str != ".." && entry_str != ".") {
             return m_path + "/" + entry_str;
         } else {
             return nextEntry();
         }
     } else {
+        m_mutex.unlock();
         if (errno == old_errno) { // no error
             return "";
         } else {

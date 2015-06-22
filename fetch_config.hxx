@@ -3,6 +3,7 @@
 
 #include <string>
 #include <sstream>
+#include <cstdlib>
 
 
 //! A reddit link fetch configuration
@@ -14,6 +15,7 @@ struct FetchConfig {
     std::string tab; //!< tab name, such as "hot" or "new"
     unsigned interval_sec; //!< Fetch interval
     unsigned last_fetch; ///!< UNIX timestamp of last fetch
+
 
     //! Returns an informative string representation
     std::string str() const {
