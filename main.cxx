@@ -1,8 +1,8 @@
 #include <atomic>
 #include <thread>
-#include <functional>
 #include <chrono>
 #include <memory>
+#include <utility>
 #include <iostream>
 #include <ctime>
 #include <stdexcept>
@@ -10,15 +10,18 @@
 #include "fetch_config.hxx"
 #include "reddit_link_loader.hxx"
 #include "notification.hxx"
+#include "temp_image_manager.hxx"
+#include "app_info.hxx"
 
 
 int main()
 {
     constexpr int notification_timeout = 10000; // ms
+    TempImageManager img_man(std::string("/tmp/") + AppInfo::appID());
     std::atomic<bool> killed(false);
 
-    auto fetch_f = [&killed] () {
-        auto timenow = (unsigned)std::time(nullptr);
+    auto fetch_f = [&killed, &img_man] () {
+        const unsigned timenow = std::time(nullptr);
         // hard-coded example configurations,
         // these could be loaded e.g. from a JSON file
         std::vector<FetchConfig> configs {
@@ -26,7 +29,7 @@ int main()
             {"funny", "hot", 12, timenow}
         };
 
-        RedditLinkLoader loader(std::move(configs));
+        RedditLinkLoader loader(std::move(configs), img_man);
 
         while (!killed.load()) {
             try {

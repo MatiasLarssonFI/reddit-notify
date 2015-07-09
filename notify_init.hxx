@@ -12,7 +12,7 @@ class NotifyInit
         static NotifyInit& getInit(std::string const & app_name);
         ~NotifyInit();
         bool good() const { return m_good; }
-        operator bool() const { return m_good; }
+        explicit operator bool() const { return m_good; }
 
         NotifyInit(NotifyInit const & rhs) = delete;
         NotifyInit& operator = (NotifyInit const & rhs) = delete;

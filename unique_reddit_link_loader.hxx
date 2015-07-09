@@ -20,9 +20,10 @@ class UniqueRedditLinkLoader
         //! Constructor.
         /*!
          * \param config Configuration for fetching links
+         * \param img_man a TempImageManager
          */
-        UniqueRedditLinkLoader(FetchConfig config);
-
+        UniqueRedditLinkLoader(FetchConfig config, TempImageManager& img_man);
+        UniqueRedditLinkLoader(UniqueRedditLinkLoader&& rhs);
 
         //! Loads links to buffer
         /*!
@@ -44,6 +45,9 @@ class UniqueRedditLinkLoader
         std::unique_ptr<RedditLink> nextLink();
 
         bool operator == (UniqueRedditLinkLoader const & rhs) const;
+
+        UniqueRedditLinkLoader(UniqueRedditLinkLoader const & rhs) = delete;
+        UniqueRedditLinkLoader& operator = (UniqueRedditLinkLoader const & rhs) = delete;
     private:
         void _fetch();
 

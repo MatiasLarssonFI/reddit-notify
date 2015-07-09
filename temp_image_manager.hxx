@@ -8,18 +8,23 @@
 
 //! Manages temporary images
 /**
- * Thread-safe singleton.
+ * Thread-safe.
  */
 class TempImageManager
 {
     public:
-        //! Returns the instance
-        static TempImageManager& getManager();
+        //! Constructor.
+        /*!
+         * \param dir_path Directory path without trailing slash
+         */
+        TempImageManager(std::string&& dir_path);
+        ~TempImageManager();
+
+        TempImageManager(TempImageManager&& rhs);
+        TempImageManager& operator = (TempImageManager&& rhs);
 
         //! Downloads an image and returns local file name
-        std::string download(std::string uri);
-
-        ~TempImageManager();
+        std::string download(std::string&& uri);
 
         TempImageManager(TempImageManager const & rhs) = delete;
         TempImageManager& operator = (TempImageManager const & rhs) = delete;
@@ -27,7 +32,6 @@ class TempImageManager
         void _truncateDir();
         void _checkDir();
 
-        TempImageManager();
         std::string m_dir;
         std::atomic<unsigned> m_img_count;
         std::mutex m_mutex;

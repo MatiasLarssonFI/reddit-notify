@@ -1,16 +1,10 @@
 #include "notify_init.hxx"
 
-#include <stdexcept>
-
 #include <libnotify/notify.h>
 
 NotifyInit::NotifyInit(std::string const & app_name)
-    : m_good(notify_init(app_name.c_str())) {
-
-    if (!m_good) {
-        throw std::runtime_error("Failed to initialize libnotify.");
-    }
-}
+    : m_good(notify_init(app_name.c_str()))
+{}
 
 
 NotifyInit::~NotifyInit() {

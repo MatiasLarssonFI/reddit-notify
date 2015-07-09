@@ -4,6 +4,8 @@
 #include <libnotify/notify.h>
 #include <string>
 
+#include "notify_init.hxx"
+
 class Notification {
     public:
         Notification(std::string const & summary, std::string const & body, std::string const & icon = "");
@@ -14,6 +16,7 @@ class Notification {
         Notification(Notification const & rhs) = delete;
         Notification& operator = (Notification const & rhs) = delete;
     private:
+        NotifyInit& m_init;
         NotifyNotification* m_handle;
 };
 

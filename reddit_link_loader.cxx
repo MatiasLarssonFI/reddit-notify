@@ -9,9 +9,9 @@
 #include "unique_reddit_link_loader.hxx"
 
 
-RedditLinkLoader::RedditLinkLoader(std::vector<FetchConfig> configs) {
+RedditLinkLoader::RedditLinkLoader(std::vector<FetchConfig> configs, TempImageManager& img_man) {
     for (auto & config : configs) {
-        m_loaders.emplace_back(std::move(config));
+        m_loaders.emplace_back(std::move(config), img_man);
     }
 }
 

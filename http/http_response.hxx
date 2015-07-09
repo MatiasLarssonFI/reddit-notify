@@ -6,8 +6,7 @@
 #include <curl/curl.h>
 
 
-class HTTPResponse
-{
+class HTTPResponse {
     public:
         HTTPResponse(CURLcode curl_code, unsigned http_code, std::string body);
         CURLcode curlCode() const { return m_curl_code; }

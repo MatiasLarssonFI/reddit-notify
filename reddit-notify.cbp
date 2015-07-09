@@ -51,8 +51,8 @@
 		<Unit filename="directory/directory.cxx" />
 		<Unit filename="directory/directory.hxx" />
 		<Unit filename="fetch_config.hxx" />
-		<Unit filename="http/curl_init.cxx" />
-		<Unit filename="http/curl_init.hxx" />
+		<Unit filename="http/curl_handle.cxx" />
+		<Unit filename="http/curl_handle.hxx" />
 		<Unit filename="http/http_request.cxx" />
 		<Unit filename="http/http_request.hxx" />
 		<Unit filename="http/http_response.cxx" />

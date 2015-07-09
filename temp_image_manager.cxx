@@ -5,14 +5,15 @@
 #include <mutex>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <utility>
 #include <stdexcept>
 
 #include "app_info.hxx"
 #include "http/http_request.hxx"
 #include "directory/directory.hxx"
 
-TempImageManager::TempImageManager()
-    : m_dir(std::string("/tmp/") + AppInfo::appID() + ".tmp")
+TempImageManager::TempImageManager(std::string&& dir_path)
+    : m_dir(std::forward<std::string>(dir_path))
     , m_img_count(0) {
 
     // create directory if it doesn't exist
@@ -24,15 +25,16 @@ TempImageManager::TempImageManager()
 }
 
 
-TempImageManager::~TempImageManager() {
-    _truncateDir();
-    ::rmdir(m_dir.c_str());
+TempImageManager::TempImageManager(TempImageManager&& rhs)
+    : m_dir(std::move(rhs.m_dir)) {
+
+    m_img_count.store(rhs.m_img_count.load());
 }
 
 
-TempImageManager& TempImageManager::getManager() {
-    static TempImageManager manager;
-    return manager;
+TempImageManager::~TempImageManager() {
+    _truncateDir();
+    ::rmdir(m_dir.c_str());
 }
 
 
@@ -52,7 +54,7 @@ void TempImageManager::_truncateDir() {
 
 void TempImageManager::_checkDir() {
     // TODO: currently we might delete images that have not been
-    // displayed yet. Maybe we should make a TempImage class, with
+    // displayed yet. Maybe we should have a TempImage class, with
     // a field like "allow_delete"?
     if (m_img_count.load() > 20) {
         _truncateDir();
@@ -61,10 +63,10 @@ void TempImageManager::_checkDir() {
 }
 
 
-std::string TempImageManager::download(std::string uri) {
+std::string TempImageManager::download(std::string&& uri) {
     _checkDir();
     m_img_count++;
-    HTTPRequest request(uri);
+    HTTPRequest request(std::forward<std::string>(uri));
     request.addHeader(std::string("User-Agent: ") + AppInfo::userAgent());
     HTTPResponse resp = request.perform();
     std::string img_name = m_dir + "/" + std::to_string(m_img_count);

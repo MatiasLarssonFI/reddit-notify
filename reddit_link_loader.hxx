@@ -8,6 +8,7 @@
 #include "reddit_link.hxx"
 #include "fetch_config.hxx"
 #include "unique_reddit_link_loader.hxx"
+#include "temp_image_manager.hxx"
 
 
 //! Manages the fetching of Reddit links according to FetchConfiguration objects
@@ -17,8 +18,9 @@ class RedditLinkLoader
         //! Constructor
         /*!
          * \param configs Vector of fetch configurations
+         * \param img_man Object to manage image downloading and storage
          */
-        RedditLinkLoader(std::vector<FetchConfig> configs);
+        RedditLinkLoader(std::vector<FetchConfig> configs, TempImageManager& img_man);
 
 
         //! Loads links to buffer

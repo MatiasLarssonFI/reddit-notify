@@ -8,13 +8,19 @@
 
 #include "app_info.hxx"
 #include "http/http_request.hxx"
-#include "temp_image_manager.hxx"
 
 
-UniqueRedditLinkLoader::UniqueRedditLinkLoader(FetchConfig config)
+UniqueRedditLinkLoader::UniqueRedditLinkLoader(FetchConfig config, TempImageManager& img_man)
     : m_config(std::move(config))
-    , m_img_man(TempImageManager::getManager())
+    , m_img_man(img_man)
     , m_fetch_count(0)
+{}
+
+
+UniqueRedditLinkLoader::UniqueRedditLinkLoader(UniqueRedditLinkLoader&& rhs)
+    : m_config(std::move(rhs.m_config))
+    , m_img_man(rhs.m_img_man)
+    , m_fetch_count(rhs.m_fetch_count)
 {}
 
 

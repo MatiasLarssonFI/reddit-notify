@@ -12,7 +12,7 @@
  * Directory stream wrapper.
  *
  * Used to loop through entry names inside a directory.
- * Thread-safe.
+ * Thread-safe. Excludes . (dot) and .. (dot-dot) entries.
  */
 class Directory {
     public:
@@ -39,8 +39,8 @@ class Directory {
         void reset();
     private:
         std::mutex m_mutex;
-        DIR* m_handle;
         std::string m_path;
+        DIR* m_handle;
 };
 
 #endif // DIRECTORY_HXX

@@ -9,13 +9,14 @@
 #include <string.h>
 
 Directory::Directory(std::string path)
-    : m_handle(::opendir(path.c_str()))
-    , m_path(std::move(path)) {
+    : m_path(std::move(path))
+    , m_handle(::opendir(m_path.c_str())) {
 
     if (!m_handle) {
-        throw std::invalid_argument(std::string("Directory ") + path + " does not exist.");
+        throw std::invalid_argument(std::string("Cannot open directory ") + path);
     }
 }
+
 
 Directory::~Directory() {
     ::closedir(m_handle);
